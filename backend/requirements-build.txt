@@ -1,0 +1,2 @@
+# Packaging only (scripts/build.ps1).
+pyinstaller>=6.22

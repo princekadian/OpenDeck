@@ -1,0 +1,108 @@
+.host {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--s6) var(--s5);
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.host__head h1 {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.host__sub {
+  margin: var(--s2) 0 0;
+  color: var(--text-muted);
+}
+
+.host__step {
+  margin-top: var(--s6);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--rule);
+}
+
+.host__step h2 {
+  margin: 0 0 var(--s3);
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.host__address {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  flex-wrap: wrap;
+}
+
+.host__url {
+  flex: 1 1 auto;
+  min-height: var(--touch-min);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--s4);
+  border-radius: var(--radius-control);
+  background: var(--socket);
+  border: 1px solid var(--key-edge);
+  font-family: var(--font-key);
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+.host__code {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-family: var(--font-key);
+  font-size: 3.5rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+}
+
+.host__code-gap {
+  width: 0.4em;
+}
+
+.host__hint {
+  margin: var(--s3) 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.host__warn,
+.host__error {
+  color: var(--led-busy);
+}
+
+.host__devices {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.host__device {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  min-height: 56px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.host__device-name {
+  font-weight: 500;
+}
+
+.host__device-state {
+  flex: 1;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.host__remove {
+  min-height: 40px;
+  padding: 0 var(--s4);
+}

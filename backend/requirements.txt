@@ -1,0 +1,5 @@
+# Runtime dependencies (bundled into OpenDeck.exe; end users never install these).
+fastapi>=0.115
+uvicorn>=0.30
+websockets>=13
+pywebview>=6.2   # desktop window (WebView2 via pythonnet)

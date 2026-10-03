@@ -1,0 +1,19 @@
+[project]
+name = "opendeck"
+version = "1.0.0"
+description = "Windows desktop app and local server that turns a phone or tablet into a Stream Deck-style control surface"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "websockets>=13",
+    "pywebview>=6.2",
+]
+license = "MIT"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "httpx>=0.27"]
+build = ["pyinstaller>=6.22"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

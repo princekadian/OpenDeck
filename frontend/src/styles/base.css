@@ -1,0 +1,147 @@
+@import "@fontsource/barlow/400.css";
+@import "@fontsource/barlow/500.css";
+@import "@fontsource/barlow/600.css";
+@import "@fontsource/barlow-semi-condensed/500.css";
+@import "@fontsource/barlow-semi-condensed/600.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--housing);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  /* Control surface: no text selection, callouts or double-tap zoom on keys. */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+input {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Shared controls */
+.btn {
+  min-height: var(--touch-min);
+  padding: 0 var(--s5);
+  border-radius: var(--radius-control);
+  border: 1px solid var(--key-edge);
+  background: var(--key-face);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  transition: background-color 120ms var(--ease-press), transform 120ms var(--ease-press);
+}
+
+.btn:active {
+  background: var(--key-face-pressed);
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btn-primary {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--housing);
+}
+
+.btn-primary:active {
+  background: #d6d8dc;
+}
+
+.led {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--led-off);
+  flex: none;
+}
+
+.led[data-tone="online"] { background: var(--led-online); box-shadow: 0 0 6px rgb(63 208 138 / 0.6); }
+.led[data-tone="busy"] { background: var(--led-busy); box-shadow: 0 0 6px rgb(240 166 58 / 0.6); }
+.led[data-tone="error"] { background: var(--led-error); box-shadow: 0 0 6px rgb(255 95 95 / 0.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Render-crash screen (ErrorBoundary) */
+.crash {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--s6) var(--s5);
+}
+
+.crash__title {
+  margin: 0 0 var(--s2);
+  font-size: var(--text-lg);
+}
+
+.crash__text {
+  margin: 0 0 var(--s4);
+  color: var(--text-muted);
+}
+
+.crash__detail {
+  margin: 0 0 var(--s5);
+  padding: var(--s3);
+  background: var(--socket);
+  border-radius: var(--radius-control);
+  font-size: var(--text-xs);
+  white-space: pre-wrap;
+  -webkit-user-select: text;
+  user-select: text;
+}

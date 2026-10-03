@@ -1,0 +1,50 @@
+/* Design tokens. Dark "console" theme is primary; a light theme would override these only. */
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces: deck housing, key faces, recessed sockets */
+  --housing: #1a1b1e;
+  --housing-raised: #222428;
+  --socket: #151618;
+  --key-face: #2b2d31;
+  --key-face-pressed: #26282c;
+  --key-edge: #3a3d43;
+  --key-highlight: rgb(255 255 255 / 0.06);
+  --rule: #2e3035;
+
+  /* Text */
+  --text: #ecedef;
+  --text-muted: #9a9ea7;
+  --text-faint: #6d717a;
+
+  /* Signal LEDs */
+  --led-off: #3b3e44;
+  --led-online: #3fd08a;
+  --led-busy: #f0a63a;
+  --led-error: #ff5f5f;
+  --focus: #8ab4ff;
+
+  /* Type */
+  --font-ui: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-key: "Barlow Semi Condensed", "Barlow", system-ui, sans-serif;
+  --text-xs: 0.8125rem; /* 13 */
+  --text-sm: 0.9375rem; /* 15 */
+  --text-md: 1.0625rem; /* 17 */
+  --text-lg: 1.375rem;  /* 22 */
+  --text-xl: 2rem;      /* 32 */
+
+  /* Space (4px base) */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+
+  --radius-key: 14px;
+  --radius-control: 10px;
+  --touch-min: 48px;
+
+  --ease-press: cubic-bezier(0.2, 0, 0, 1);
+}

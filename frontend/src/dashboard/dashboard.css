@@ -1,0 +1,429 @@
+/* Control mode. Layout reflows by available space (see layout/gridLayout.ts);
+   data-size = compact (phones) | regular (tablets, laptops) | wide (desktops). */
+
+.deck {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  /* dvh tracks mobile browser chrome; vh is the fallback for older engines. */
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+/* ---- header ---------------------------------------------------------- */
+
+.deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  min-height: 56px;
+  padding: 0 var(--s5);
+  border-bottom: 1px solid var(--rule);
+}
+
+.deck-header__where {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  min-width: 0;
+}
+
+.profile-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  flex: none;
+  max-width: 40vw;
+  height: 40px;
+  padding: 0 var(--s2) 0 var(--s3);
+  border-radius: var(--radius-control);
+  border: 1px solid var(--rule);
+  background: var(--housing-raised);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.profile-switch__name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.profile-switch__chevron {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.profile-switch__select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  font-size: 16px;
+}
+
+.profile-switch:has(.profile-switch__select:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.deck-header__page {
+  min-width: 0;
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deck-header__link {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.deck-header__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  height: 32px;
+  padding: 0 var(--s3);
+  border-radius: 16px;
+  background: var(--housing-raised);
+  border: 1px solid var(--rule);
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ---- grid ------------------------------------------------------------ */
+
+.deck-main {
+  position: relative;
+  min-height: 0;
+}
+
+.deck-grid-frame {
+  height: 100%;
+  padding: var(--s5);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* Page too big for the screen: scroll vertically only, never sideways. */
+.deck-grid-frame[data-scroll] {
+  place-items: start center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* --cols, --key and --gap are computed in JS from the measured frame. */
+.deck-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--key));
+  grid-auto-rows: var(--key);
+  gap: var(--gap);
+}
+
+.deck-socket {
+  border-radius: var(--radius-key);
+  background: var(--socket);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.5);
+}
+
+/* ---- offline + empty --------------------------------------------------- */
+
+.offline-banner {
+  position: absolute;
+  left: 50%;
+  bottom: var(--s5);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s2) var(--s2) var(--s2) var(--s4);
+  border-radius: 14px;
+  background: var(--housing-raised);
+  border: 1px solid var(--rule);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.4);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+.offline-banner__retry {
+  color: var(--text-muted);
+}
+
+.deck-empty {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* ---- page bar ---------------------------------------------------------- */
+
+.page-bar {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  gap: var(--s2);
+  padding: var(--s2) var(--s5);
+  border-top: 1px solid var(--rule);
+  overflow: hidden;
+}
+
+.page-bar__tab {
+  flex: none;
+  min-width: 112px;
+  min-height: 52px;
+  padding: 0 var(--s5);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: var(--text-md);
+  position: relative;
+}
+
+/* ---- page stepper (tabs don't fit) ---------------------------------------- */
+
+.page-stepper {
+  display: grid;
+  grid-template-columns: var(--touch-min) minmax(0, 1fr) var(--touch-min);
+  align-items: center;
+  gap: var(--s2);
+  width: 100%;
+}
+
+.page-stepper__arrow {
+  width: var(--touch-min);
+  height: var(--touch-min);
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text);
+}
+
+.page-stepper__arrow:active {
+  background: var(--housing-raised);
+}
+
+.page-stepper__current {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: var(--touch-min);
+  border-radius: var(--radius-control);
+  background: var(--housing-raised);
+}
+
+.page-stepper__name {
+  max-width: 100%;
+  padding: 0 var(--s3);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-stepper__count {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.page-stepper__select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  font-size: 16px; /* below 16px iOS zooms the page when the picker opens */
+}
+
+.page-stepper__current:has(.page-stepper__select:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Centered when tabs fit, scrollable from the first tab when they don't
+   (justify-content: center would clip the leading tabs). */
+.page-bar__tab:first-child {
+  margin-left: auto;
+}
+
+.page-bar__tab:last-child {
+  margin-right: auto;
+}
+
+.page-bar__tab[aria-current="page"] {
+  color: var(--text);
+  background: var(--housing-raised);
+}
+
+/* Active tab marker: an inset bar, so the state is not carried by color alone. */
+.page-bar__tab[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 30%;
+  right: 30%;
+  bottom: 6px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--text);
+}
+
+@media (orientation: portrait) and (max-width: 900px) {
+  .deck-header__pc {
+    display: none;
+  }
+  .deck-grid-frame {
+    padding: var(--s4);
+  }
+}
+
+/* ---- phones ------------------------------------------------------------ */
+
+.deck[data-size="compact"] .deck-header {
+  min-height: 48px;
+  padding: 0 var(--s4);
+}
+
+.deck[data-size="compact"] .deck-header__page {
+  font-size: var(--text-md);
+}
+
+.deck[data-size="compact"] .deck-header__pc {
+  display: none;
+}
+
+.deck[data-size="compact"] .deck-grid-frame {
+  padding: var(--s3);
+}
+
+.deck[data-size="compact"] .page-bar {
+  padding: var(--s1) var(--s3);
+}
+
+.deck[data-size="compact"] .page-bar__tab {
+  min-width: 88px;
+  min-height: 48px;
+  padding: 0 var(--s4);
+}
+
+.deck[data-size="compact"] .offline-banner {
+  left: var(--s3);
+  right: var(--s3);
+  bottom: var(--s3);
+  transform: none;
+  white-space: normal;
+}
+
+.deck[data-size="compact"] .offline-banner__text {
+  flex: 1;
+}
+
+/* ---- folders --------------------------------------------------------------------------- */
+
+.deck-trail {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.deck-trail__part {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.deck-trail__step {
+  flex: none;
+  max-width: 28vw;
+  min-height: 40px;
+  padding: 0 var(--s2);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--text-muted);
+  font-size: var(--text-md);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deck-trail__step:first-child {
+  padding-left: 0;
+}
+
+.deck-trail__sep {
+  padding: 0 2px;
+  color: var(--text-faint);
+}
+
+.deck-trail .deck-header__page {
+  padding-left: var(--s2);
+}
+
+.deck-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  flex: none;
+  min-height: 44px;
+  padding: 0 var(--s3);
+  margin-left: auto;
+  margin-right: var(--s3);
+  border-radius: var(--radius-control);
+  border: 1px solid var(--rule);
+  background: var(--housing-raised);
+  font-weight: 500;
+}
+
+.deck[data-size="compact"] .deck-trail__step:not(:last-of-type) {
+  max-width: 18vw;
+}
+
+.deck-folder-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--text-muted);
+  align-self: center;
+}
+
+/* Entering a folder: a short slide so the change of place is felt, not watched. */
+.deck-grid[data-enter="folder"] {
+  animation: folder-in 140ms var(--ease-press);
+}
+
+@keyframes folder-in {
+  from {
+    opacity: 0.4;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "OpenDeck",
+  "short_name": "Deck",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#1a1b1e",
+  "theme_color": "#1a1b1e",
+  "start_url": "/",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

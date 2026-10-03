@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+frontend/dist/
+*.sqlite3
+*.log
+# packaging output (scripts/build.ps1)
+build/
+dist/
+*.tsbuildinfo
