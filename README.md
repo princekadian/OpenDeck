@@ -140,6 +140,159 @@ cd backend
 Tests: `cd backend; ..\.venv\Scripts\python -m pytest -q` and `cd frontend; npm test`.
 More in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md). Building the exe and installer: [BUILD.md](BUILD.md).
 
+## Build the installer
+
+You can build `OpenDeck-Setup-<version>.exe` on GitHub (nothing to install) or on your own PC.
+
+### On GitHub (Actions tab)
+
+The workflow [`.github/workflows/build-installer.yml`](.github/workflows/build-installer.yml) runs
+`scripts\build.ps1` on a Windows machine at GitHub: it builds the frontend, runs the tests, builds
+`OpenDeck.exe` and packs the installer.
+
+It runs by itself on every push to `main` and on every pull request. To start it by hand:
+
+1. Open <https://github.com/princekadian/OpenDeck/actions>.
+2. Choose **Build installer** on the left, then **Run workflow** → pick the branch → **Run workflow**.
+   Tick *Skip the frontend and backend tests* for a faster build.
+3. Wait for the green check (about 10 minutes), open the run, and download **OpenDeck-Setup** under
+   *Artifacts*. It is a zip with the installer inside. Artifacts are kept for 90 days.
+
+A red cross means a step failed: open the run, click the failed step and read the last lines of its log.
+
+### On your PC
+
+Needs Windows 10/11 x64 with Python 3.12, Node.js 20+, Git and Inno Setup 6
+(`winget install Python.Python.3.12 OpenJS.NodeJS.LTS Git.Git JRSoftware.InnoSetup`):
+
+```powershell
+git clone https://github.com/princekadian/OpenDeck.git
+cd OpenDeck
+powershell -ExecutionPolicy Bypass -File scripts\build.ps1
+```
+
+The installer appears in `dist\installer\`. Options and details: [BUILD.md](BUILD.md).
+
+### Publish a release
+
+A version tag builds the installer and publishes it as a GitHub Release (with notes generated from
+the commits) at <https://github.com/princekadian/OpenDeck/releases>:
+
+1. Set the new version in `backend/opendeck/__init__.py` (`__version__ = "1.1.0"`), and the same number
+   in `backend/pyproject.toml` and `frontend/package.json`. Add a section to `CHANGELOG.md`.
+2. Commit and push those changes (see below).
+3. Tag the commit and push the tag. The tag must be `v` + the version, or the build stops:
+
+   ```powershell
+   git tag v1.1.0
+   git push origin v1.1.0
+   ```
+
+## Change the code and push it with Git
+
+### One-time setup
+
+1. Install Git (`winget install Git.Git`) and tell it who you are. This name and email appear on
+   your commits:
+
+   ```powershell
+   git config --global user.name "Your Name"
+   git config --global user.email "you@example.com"
+   ```
+
+2. Get the code:
+
+   ```powershell
+   git clone https://github.com/princekadian/OpenDeck.git
+   cd OpenDeck
+   ```
+
+   If you already have a folder from before, update it instead: `git pull`.
+
+3. Signing in: the first `git push` opens a browser window (Git Credential Manager, included with Git
+   for Windows). Sign in with your GitHub account; Git remembers it.
+
+Only the repository owner and invited collaborators can push to
+`princekadian/OpenDeck` directly. Everyone else: click **Fork** on the repository page, clone *your*
+fork instead (`https://github.com/<your-name>/OpenDeck.git`), push there, and open a pull request
+(step 6 below).
+
+### Every change
+
+1. **Start from the latest code**:
+
+   ```powershell
+   git checkout main
+   git pull
+   ```
+
+2. **Make a branch** for the change (a short name that says what it is):
+
+   ```powershell
+   git checkout -b sound-effects
+   ```
+
+3. **Edit, then check it works**: run the app from source (see Development) and the tests:
+
+   ```powershell
+   cd backend; ..\.venv\Scripts\python -m pytest -q; cd ..
+   cd frontend; npm test; npm run typecheck; cd ..
+   ```
+
+4. **Review and commit**:
+
+   ```powershell
+   git status                 # which files changed
+   git diff                   # what changed in them
+   git add -A                 # include every change (or name files: git add README.md)
+   git commit -m "Add sound effects actions"
+   ```
+
+   Never commit `.venv`, `node_modules`, `dist`, `build` or `*.sqlite3`; `.gitignore` already leaves
+   them out.
+
+5. **Push the branch** to GitHub:
+
+   ```powershell
+   git push -u origin sound-effects
+   ```
+
+   (`-u` is only needed the first time for a branch; afterwards plain `git push` works.)
+
+6. **Open a pull request**: GitHub shows a *Compare & pull request* button on the repository page
+   after the push (or go to **Pull requests → New pull request**). The **Build installer** workflow runs
+   on the pull request; wait for the green check. Then **Merge pull request**. The workflow runs again
+   on `main` and its artifact is the installer with your change.
+
+   Repository owner, small change, no review wanted: you may skip the branch and pull request and
+   push straight to `main`:
+
+   ```powershell
+   git checkout main
+   git pull
+   git add -A
+   git commit -m "Describe the change"
+   git push origin main
+   ```
+
+7. **Clean up** after merging:
+
+   ```powershell
+   git checkout main
+   git pull
+   git branch -d sound-effects
+   ```
+
+### When something goes wrong
+
+| Message | What to do |
+|---|---|
+| `rejected ... (fetch first)` or `non-fast-forward` | Someone pushed first. `git pull --rebase`, then `git push` again |
+| `CONFLICT (content)` after a pull | Open the listed files, keep the right lines and delete the `<<<<<<<`, `=======`, `>>>>>>>` markers, then `git add <file>` and `git rebase --continue` |
+| `Permission denied` / `403` | You are not a collaborator: push to your fork and open a pull request |
+| `Please tell me who you are` | Run the two `git config --global` commands above |
+| Committed something by mistake (not pushed yet) | `git reset --soft HEAD~1` undoes the commit and keeps your changes |
+
 ## Architecture
 
 ```text
