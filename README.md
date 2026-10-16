@@ -61,6 +61,7 @@ Stopping the server disconnects devices; you can keep editing while it is stoppe
 | System | Lock, Shutdown, Restart, Sleep, Hibernate, Sign out (these ask for a second tap on the device by default), Task Manager, Settings (choose a page) |
 | Audio | Volume up/down/set (with the Windows volume pop-up), Mute, microphone level and mute, switch default output/microphone. Keys show the live level or mute state |
 | Media | Play/Pause, Previous, Next, Stop (sent as media keys, which Windows routes to the active player), Volume up/down |
+| Sound effects | Play sound (MP3, WAV, OGG, Opus, FLAC, M4A, WMA) on the PC's speakers and optionally a second output such as a virtual cable for Discord; press again to stop, restart or overlap; Stop all sounds. Keys show Playing |
 | Keyboard | Hotkey (recorded), Type text (any language), Key press, Key combination |
 | Display | Brightness (laptop panels, and monitors with DDC/CI enabled), projection mode like Win+P, HDR on/off |
 | Window | Minimize, Maximize, Close, Restore, Switch application, Move, Resize (active window) |

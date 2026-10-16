@@ -8,6 +8,7 @@ CATEGORIES: list[tuple[str, str]] = [
     ("system", "System"),
     ("audio", "Audio"),
     ("media", "Media"),
+    ("soundboard", "Sound effects"),
     ("keyboard", "Keyboard"),
     ("display", "Display"),
     ("window", "Window"),

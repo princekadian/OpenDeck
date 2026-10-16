@@ -57,7 +57,7 @@ class EnabledBody(_Body):
 
 
 class PickBody(_Body):
-    kind: Literal["exe", "file", "folder"]
+    kind: Literal["exe", "file", "folder", "audio"]
 
 
 class PathBody(_Body):

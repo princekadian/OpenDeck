@@ -10,14 +10,16 @@ import { isVisible, properties } from "./schema";
 import { KeySelect, ShortcutField, type Shortcut } from "./ShortcutField";
 import { StepsField, SubActionField, type StepValue } from "./StepsField";
 
-type PathKind = "exe" | "file" | "folder";
-const PATH_WIDGETS = new Set(["exe", "file", "folder"]);
+type PathKind = "exe" | "file" | "folder" | "audio";
+// Widget -> kind of Windows file dialog its Browse button opens.
+const PICK_KINDS: Record<string, PathKind> = { exe: "exe", file: "file", folder: "folder", "audio-file": "audio" };
 const PLACEHOLDERS: Record<string, string> = {
   exe: "C:\\Program Files\\App\\App.exe",
   app: "C:\\Program Files\\App\\App.exe",
   file: "C:\\Users\\You\\Documents\\Project.xlsx",
   folder: "C:\\Users\\You\\Downloads",
   url: "https://example.com",
+  "audio-file": "C:\\Users\\You\\Music\\Airhorn.mp3",
 };
 
 export interface ActionFieldsProps {
@@ -129,7 +131,7 @@ function Field(props: FieldProps) {
   } else if (prop.type === "integer" || prop.type === "number") {
     control = <NumberInput id={id} prop={prop} value={value} onChange={onChange} invalid={Boolean(error)} describedBy={describedBy} />;
   } else if (widget === "audio-output" || widget === "audio-input") {
-    control = <AudioDeviceSelect id={id} flow={widget === "audio-output" ? "output" : "input"} required={required} value={(value as string) ?? ""} onChange={onChange} />;
+    control = <AudioDeviceSelect id={id} flow={widget === "audio-output" ? "output" : "input"} required={required} emptyLabel={prop.emptyLabel} value={(value as string) ?? ""} onChange={onChange} />;
   } else if (widget === "display") {
     control = <DisplaySelect id={id} value={(value as string) ?? ""} onChange={onChange} />;
   } else if (widget === "page" || widget === "profile") {
@@ -223,13 +225,14 @@ function TextInput({ id, prop, value, error, onChange, onPathPicked, describedBy
   const [browsing, setBrowsing] = useState(false);
   const [browseError, setBrowseError] = useState<string | null>(null);
   const widget = prop.widget ?? "text";
-  const isPath = PATH_WIDGETS.has(widget);
+  const pickKind = PICK_KINDS[widget];
+  const isPath = pickKind !== undefined;
 
   async function browse() {
     setBrowsing(true);
     setBrowseError(null);
     try {
-      const { path } = await api.pick(widget as PathKind);
+      const { path } = await api.pick(pickKind);
       if (path) {
         onChange(path);
         if (widget === "exe") onPathPicked?.(path);
@@ -306,7 +309,7 @@ function AppInput(props: FieldProps & { describedBy?: string }) {
   );
 }
 
-function AudioDeviceSelect({ id, flow, required, value, onChange }: { id: string; flow: "output" | "input"; required: boolean; value: string; onChange: (v: string) => void }) {
+function AudioDeviceSelect({ id, flow, required, emptyLabel, value, onChange }: { id: string; flow: "output" | "input"; required: boolean; emptyLabel?: string; value: string; onChange: (v: string) => void }) {
   const { data, error, refresh } = useAudioDevices(flow);
   const missing = value && data && !data.some((d) => d.id === value);
   return (
@@ -318,7 +321,7 @@ function AudioDeviceSelect({ id, flow, required, value, onChange }: { id: string
               Choose a device
             </option>
           ) : (
-            <option value="">{flow === "output" ? "Default output (follows Windows)" : "Default microphone (follows Windows)"}</option>
+            <option value="">{emptyLabel ?? (flow === "output" ? "Default output (follows Windows)" : "Default microphone (follows Windows)")}</option>
           )}
           {data?.map((d) => (
             <option key={d.id} value={d.id}>

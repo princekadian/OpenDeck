@@ -15,6 +15,7 @@ EXPECTED_MENU = {
               "Decrease microphone volume", "Mute microphone", "Change audio output device",
               "Change microphone device"],
     "Media": ["Play / Pause", "Previous track", "Next track", "Stop", "Volume up", "Volume down"],
+    "Sound effects": ["Play sound", "Stop all sounds"],
     "Keyboard": ["Hotkey", "Type text", "Key press", "Key combination"],
     "Display": ["Brightness up", "Brightness down", "Set brightness", "Change display", "Toggle HDR"],
     "Window": ["Minimize active window", "Maximize active window", "Close active window",

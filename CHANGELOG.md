@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Sound effects category: Play sound (MP3, WAV, OGG, Opus, FLAC, M4A, WMA) with volume, output
+  device, an optional second device for voice chat, and press-again behaviour; Stop all sounds.
+
 ## 1.0.0 — 2026-10-03
 
 First release as a Windows desktop application, under the new name **OpenDeck** (previously

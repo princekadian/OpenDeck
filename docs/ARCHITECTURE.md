@@ -224,9 +224,12 @@ actions/
   runtime.py     ActionRuntime given to actions: persistent store, run_step, navigate,
                  refresh_state, shared services (audio)
   builtin/       launch (Open), system, audio, keys (Keyboard + Media), display, windows
-                 (Window + Applications), navigation, workflow, streaming (coming soon), advanced
+                 (Window + Applications), navigation, workflow, streaming (coming soon), advanced,
+                 soundboard (Sound effects)
 native/windows/  ctypes only: shell, power, audio (Core Audio COM), keyboard (SendInput),
-                 winmgmt (windows/processes), display (DDC/CI, WMI, SetDisplayConfig, HDR)
+                 winmgmt (windows/processes), display (DDC/CI, WMI, SetDisplayConfig, HDR),
+                 sound (Media Foundation decode -> waveOut; Ogg rewrapped as WebM, which
+                 Windows decodes but has no Ogg reader for desktop apps)
 services/audio.py        AudioService: COM on one dedicated thread; actions never touch COM
 services/state_coordinator.py  reads action state after presses/config changes, polls only
                          "polled" actions every 2 s and only while a device is connected

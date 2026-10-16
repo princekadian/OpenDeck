@@ -12,7 +12,7 @@ from typing import Literal
 
 from .session import _require_windows
 
-PickKind = Literal["exe", "file", "folder"]
+PickKind = Literal["exe", "file", "folder", "audio"]
 
 OFN_FILEMUSTEXIST = 0x1000
 OFN_PATHMUSTEXIST = 0x800
@@ -55,8 +55,10 @@ class BROWSEINFOW(ctypes.Structure):
 _FILTERS = {
     "exe": "Applications (*.exe)\0*.exe\0All files (*.*)\0*.*\0\0",
     "file": "All files (*.*)\0*.*\0\0",
+    "audio": "Audio files\0*.mp3;*.wav;*.ogg;*.oga;*.opus;*.flac;*.m4a;*.aac;*.wma\0All files (*.*)\0*.*\0\0",
 }
-_TITLES = {"exe": "Choose an application", "file": "Choose a file", "folder": "Choose a folder"}
+_TITLES = {"exe": "Choose an application", "file": "Choose a file", "folder": "Choose a folder",
+           "audio": "Choose a sound"}
 
 
 def pick_path(kind: PickKind, initial: str | None = None) -> str | None:

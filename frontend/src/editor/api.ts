@@ -65,6 +65,8 @@ export interface SchemaProperty {
   unit?: string;
   /** Friendly labels for enum values. */
   labels?: Record<string, string>;
+  /** Label of the empty choice in a device list (default: follow Windows). */
+  emptyLabel?: string;
   /** Show the field only when another field has one of these values. */
   showWhen?: Record<string, string[]>;
 }
@@ -215,7 +217,7 @@ export const api = {
       actionType,
       actionConfig,
     }),
-  pick: (kind: "exe" | "file" | "folder") => request<{ path: string | null }>("POST", "/pick", { kind }),
+  pick: (kind: "exe" | "file" | "folder" | "audio") => request<{ path: string | null }>("POST", "/pick", { kind }),
   appInfo: (path: string) => request<{ name: string; iconRef: string | null }>("POST", "/app-info", { path }),
   uploadIcon: (png: Blob) => request<{ iconRef: string }>("POST", "/icons", png, "image/png"),
   audioDevices: (flow: "output" | "input") => request<{ devices: Choice[] }>("GET", `/audio-devices?flow=${flow}`),

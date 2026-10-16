@@ -6,7 +6,8 @@ from ..base import Action
 
 
 def all_builtin_actions() -> list[Action]:
-    from . import advanced, audio, display, keys, launch, navigation, streaming, system, windows, workflow
+    from . import (advanced, audio, display, keys, launch, navigation, soundboard, streaming, system, windows,
+                   workflow)
 
     return [
         # Open
@@ -23,6 +24,8 @@ def all_builtin_actions() -> list[Action]:
         # Media
         keys.PlayPauseAction(), keys.PreviousTrackAction(), keys.NextTrackAction(), keys.StopMediaAction(),
         audio.MediaVolumeUpAction(), audio.MediaVolumeDownAction(),
+        # Sound effects
+        soundboard.PlaySoundAction(), soundboard.StopSoundsAction(),
         # Keyboard
         keys.HotkeyAction(), keys.TypeTextAction(), keys.KeyPressAction(), keys.KeyComboAction(),
         # Display

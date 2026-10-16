@@ -57,10 +57,8 @@ async def native(fn: Callable[..., T], *args: Any, **kwargs: Any) -> T:
     """Run a blocking Windows call off the event loop, mapping failures to ActionError."""
     try:
         return await asyncio.to_thread(fn, *args, **kwargs)
-    except shell.ShellError as exc:
-        raise ActionError(exc.code, exc.message) from exc
-    except PlatformError as exc:
-        raise ActionError("PLATFORM_ERROR", str(exc)) from exc
+    except PlatformError as exc:  # ShellError and SoundError carry their own code
+        raise ActionError(getattr(exc, "code", "PLATFORM_ERROR"), str(exc)) from exc
 
 
 async def open_target(target: str, *, parameters: str | None = None, directory: str | None = None) -> None:
