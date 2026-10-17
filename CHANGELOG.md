@@ -1,10 +1,12 @@
 # Changelog
 
-## Unreleased
+## 1.1.0 — 2026-10-17
 
 ### Added
 - Sound effects category: Play sound (MP3, WAV, OGG, Opus, FLAC, M4A, WMA) with volume, output
   device, an optional second device for voice chat, and press-again behaviour; Stop all sounds.
+- The installer is built on GitHub Actions (Build installer); version tags publish a release.
+- README: building the installer and contributing changes with Git.
 
 ## 1.0.0 — 2026-10-03
 

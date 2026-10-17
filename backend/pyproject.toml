@@ -1,6 +1,6 @@
 [project]
 name = "opendeck"
-version = "1.0.0"
+version = "1.1.0"
 description = "Windows desktop app and local server that turns a phone or tablet into a Stream Deck-style control surface"
 requires-python = ">=3.12"
 dependencies = [

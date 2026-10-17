@@ -18,7 +18,7 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from opendeck import logging_setup
+from opendeck import __version__, logging_setup
 from opendeck.config import AppConfig, adopt_legacy_data
 from opendeck.server.http import create_app
 from opendeck.server.remote import RemoteServer
@@ -146,7 +146,7 @@ def test_logs_endpoint_and_diagnostics(desktop_client) -> None:
     after = mine[-1]["seq"]
     assert all(e["seq"] > after for e in desktop_client.get(f"/api/admin/logs?after={after}").json()["entries"])
     diag = desktop_client.get("/api/admin/diagnostics").json()
-    assert diag["version"] == "1.0.0" and diag["schemaVersion"] >= 5 and diag["databaseOk"] is True
+    assert diag["version"] == __version__ and diag["schemaVersion"] >= 5 and diag["databaseOk"] is True
     assert desktop_client.get("/api/admin/health").json()["ok"] is True
 
 
